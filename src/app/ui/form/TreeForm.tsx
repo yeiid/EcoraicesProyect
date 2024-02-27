@@ -1,36 +1,34 @@
-"use client"
+import { useState } from "react";
 
-import React, { useState } from 'react';
-import axios from 'axios';
-
-const Formulario = () => {
+const Formulario: React.FC = () => {
   const [formData, setFormData] = useState({
-    especie: '',
-    municipio: '',
-    ciudadano: '',
+    especie: "",
+    municipio: "",
+    ciudadano: "",
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post('/api/route', formData);
+    // Implement logic to handle form submission here:
+    // - Validate form data (optional)
+    // - Send data to your backend API endpoint using a suitable method like fetch or axios
+    // - Display success or error messages based on the response
 
-      if (response.status === 200) {
-        alert('Formulario enviado correctamente');
-      } else {
-        alert('Error al enviar el formulario');
-        console.error('Error:', response.data);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    console.log("Form submitted with data:", formData); // Example usage for logging or testing
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
-    <form className="flex h-full flex-col items-center px-3 py-4 md:px-2" onSubmit={handleSubmit}>
-      <div className="flex flex-col items-center ">
-        <h1 className="text-2xl font-bold">Formulario</h1>
+    <div className="flex h-full flex-col items-center px-3 py-4 md:px-2">
+      <h1 className="text-2xl font-bold">Formulario</h1>
+      <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         <label className="mt-4" htmlFor="especie">
           Especie
         </label>
@@ -39,7 +37,7 @@ const Formulario = () => {
           type="text"
           name="especie"
           value={formData.especie}
-          onChange={(e) => setFormData({ ...formData, especie: e.target.value })}
+          onChange={handleInputChange}
         />
 
         <label className="mt-4" htmlFor="municipio">
@@ -49,7 +47,7 @@ const Formulario = () => {
           className="mb-4 py-2 px-4 border border-gray-300 rounded-md"
           name="municipio"
           value={formData.municipio}
-          onChange={(e) => setFormData({ ...formData, municipio: e.target.value })}
+          onChange={handleInputChange}
         >
           <option value="">Seleccione</option>
           <option value="Barrancas">Barrancas</option>
@@ -66,17 +64,14 @@ const Formulario = () => {
           type="text"
           name="ciudadano"
           value={formData.ciudadano}
-          onChange={(e) => setFormData({ ...formData, ciudadano: e.target.value })}
+          onChange={handleInputChange}
         />
 
-        <button
-          className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-md"
-          type="submit"
-        >
+        <button className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-md" type="submit">
           Enviar
         </button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

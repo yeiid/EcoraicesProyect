@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/TreeForm.jsx", "src/app/ui/map/page.jsx", "src/app/lib/action.ts", "src/context/UserContext.tsx", "src/app/api/index.tsx", "src/app/api/index.ts", "src/app/api/index.ts", "src/app/ui/form/From.jsx", "src/app/api/route.js", "src/app/ui/form/TreeForm.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/TreeForm.jsx", "src/app/ui/map/page.jsx", "src/app/lib/action.ts", "src/context/UserContext.tsx", "src/app/api/index.tsx", "src/app/api/index.ts", "src/app/api/index.ts", "src/app/ui/form/From.jsx", "src/app/api/route.js", "src/app/ui/form/TreeForm.tsx"],
   "exclude": ["node_modules"]
 }

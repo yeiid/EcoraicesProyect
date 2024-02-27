@@ -1,17 +1,13 @@
 import React, { useContext } from 'react';
-import { ContextMap } from '@/context/UserContext';
-
-interface ButtonContextProps {
-  setLocation: (location: { lat: number; lng: number }) => void;
-}
+import { ContextMap, ContextMapProps } from '@/context/UserContext';
 
 const Button: React.FC = () => {
-  const { setLocation } = useContext<ButtonContextProps>(ContextMap);
+  const { setLocation } = useContext<ContextMapProps>(ContextMap);
 
   const handleGetLocation = async () => {
     if (navigator.geolocation) {
       try {
-        const position = await new Promise((resolve, reject) => {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject);
         });
         setLocation({

@@ -2,7 +2,7 @@
 
 import React, { createContext, useState } from 'react';
 
-interface ContextMapProps {
+export interface ContextMapProps {
   location: { lat: number; lng: number };
   setLocation: (newLocation: { lat: number; lng: number }) => void;
   data: { especie: string; municipio: string; ciudadano: string };
