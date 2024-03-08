@@ -1,26 +1,36 @@
 "use client"
 
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import {ContextMapProps} from '@/app/lib/types'
 
-export interface ContextMapProps {
-  location: { lat: number; lng: number };
-  setLocation: (newLocation: { lat: number; lng: number }) => void;
-  data: { especie: string; municipio: string; ciudadano: string };
-  setData: (newData: { especie: string; municipio: string; ciudadano: string }) => void;
-}
+
+
 
 export const ContextMap = createContext<ContextMapProps>({
   // Set initial values, adjust types if needed
-  location: { lat: 10.9968347, lng: -72.7802635 },
+  location: { lat: 0, lng: 0 },
   setLocation: () => {},
   data: { especie: '', municipio: '', ciudadano: '' },
   setData: () => {},
 });
 
+
+
+export const useProvider =()=>{
+  const context =useContext<ContextMapProps>(ContextMap)
+  if(!context){
+    throw new Error("ContextMap must be used whitin a ContextMapProvider")
+  }
+  return context
+}
+
+
+
 export function FormContext({ children }: { children: React.ReactNode }): JSX.Element {
+
   const [location, setLocation] = useState<{ lat: number; lng: number }>({
-    lat: 10.9968347, // Adjust initial values if needed
-    lng: -72.7802635,
+    lat: 0, // Adjust initial values if needed
+    lng: 0,
   });
   const [data, setData] = useState<ContextMapProps['data']>({
     especie: '',
@@ -28,8 +38,9 @@ export function FormContext({ children }: { children: React.ReactNode }): JSX.El
     ciudadano: '',
   });
 
+
   return (
-    <ContextMap.Provider value={{ location, setLocation, data, setData }}>
+    <ContextMap.Provider value={{ data,setData,location,setLocation }}>
       {children}
     </ContextMap.Provider>
   );

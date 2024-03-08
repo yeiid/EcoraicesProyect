@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Uses connection pooling (recommended)
+  url      = env("POSTGRES_PRISMA_URL")
+}
+
+model Especie {
+  id           Int      @id @default(autoincrement())
+  createId     DateTime @default(now())
+  especie      String
+  municipio    String
+  ciudadano    String
+  latitud      Float    // Stores latitude as a decimal number
+  longitud     Float    // Stores longitude as a decimal number
+
+  // Restrict duplicate coordinates (optional)
+  @@unique([latitud, longitud])
+}

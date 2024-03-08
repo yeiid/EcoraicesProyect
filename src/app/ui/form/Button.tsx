@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { ContextMap, ContextMapProps } from '@/context/UserContext';
+import { useContext } from 'react';
+import { ContextMap,  } from '@/context/UserContext';
 
 const Button: React.FC = () => {
-  const { setLocation } = useContext<ContextMapProps>(ContextMap);
+  const { setLocation } = useContext(ContextMap);
 
   const handleGetLocation = async () => {
     if (navigator.geolocation) {
@@ -14,6 +14,7 @@ const Button: React.FC = () => {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
+        alert(' geolocalización obtenidad')
       } catch (error) {
         console.error('Error getting location:', error);
         alert('Error al obtener la ubicación. Inténtalo de nuevo.');
