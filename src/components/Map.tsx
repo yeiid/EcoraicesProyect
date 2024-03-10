@@ -1,12 +1,10 @@
 "use client";
-import { useContext } from "react";
-import { ContextMap } from "@/context/UserContext";
+import { useContextMap } from "@/context/UserContext";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 
 export default function Map() {
-  const Context = useContext(ContextMap);
-  const { location, data } = Context;
+  const { data, location } = useContextMap();
 
   return (
     <MapContainer

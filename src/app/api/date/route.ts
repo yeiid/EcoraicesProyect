@@ -27,7 +27,7 @@ export  async function POST(req: NextRequest, res: NextResponse) {
     console.error("Error de validación:", error);
     return NextResponse.json({ error: "Error de validación" });
   }
-  // Convertir tipos
+
   const data = {
     especie: body.data.especie,
     municipio: body.data.municipio,
@@ -35,11 +35,11 @@ export  async function POST(req: NextRequest, res: NextResponse) {
     latitud: body.location.lat,
     longitud: body.location.lng,
   };
-  
+
   try {
     // Crear un nuevo registro en la tabla "Especie" usando Prisma
     const createdEspecie = await prisma.especie.create({
-    data
+    data,
     });
     // Si la operación fue exitosa, devolver la respuesta
     if (createdEspecie) {
@@ -56,6 +56,4 @@ export  async function POST(req: NextRequest, res: NextResponse) {
     return NextResponse.json({ message: "Error interno del servidor" });
   }
   // return NextResponse.json({ error: "lo logre" });
-
-
 }

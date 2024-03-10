@@ -1,15 +1,12 @@
 "use client"
-import { useContext } from 'react';
 import {useRouter} from 'next/navigation'
 import Button from './Button';
-import  {ContextMap}  from "@/context/UserContext";
+import  {useContextMap}  from "@/context/UserContext";
 
 
 const Formulario: React.FC = () => {
-  const Context = useContext(ContextMap);
-  const {  data, setData,location } = Context;
+  const { data, setData, location } = useContextMap();
 
-  
   const router = useRouter()
 
 async function  handler (e: React.FormEvent<HTMLFormElement>){

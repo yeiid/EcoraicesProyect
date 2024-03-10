@@ -7,7 +7,7 @@ export type Form = {
 };
 
 export type Location = {
-  location: { lat: boolean; lng: number };
+  location: { lat: number; lng: number };
 };
 
 export type Params = {

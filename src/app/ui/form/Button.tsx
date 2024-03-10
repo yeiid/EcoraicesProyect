@@ -1,9 +1,8 @@
-import { useContext } from 'react';
-import { ContextMap,  } from '@/context/UserContext';
+"use client"
 
+import { useContextMap,  } from '@/context/UserContext';
 const Button: React.FC = () => {
-  const { setLocation } = useContext(ContextMap);
-
+  const { setLocation } = useContextMap();
   const handleGetLocation = async () => {
     if (navigator.geolocation) {
       try {
