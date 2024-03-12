@@ -1,5 +1,4 @@
 "use client"
-import {useRouter} from 'next/navigation'
 import Button from './Button';
 import  {useContextMap}  from "@/context/UserContext";
 
@@ -7,7 +6,6 @@ import  {useContextMap}  from "@/context/UserContext";
 const Formulario: React.FC = () => {
   const { data, setData, location } = useContextMap();
 
-  const router = useRouter()
 
 async function  handler (e: React.FormEvent<HTMLFormElement>){
   e.preventDefault();
@@ -22,15 +20,17 @@ async function  handler (e: React.FormEvent<HTMLFormElement>){
       },
       body: JSON.stringify(allData)
   })
-  const date = await res.json()
-  console.log(date)
-  console.log(allData)
-  router.refresh()
+  if (res.ok) {
+    alert('Data sent successfully!');
+    window.location.reload();
+  } else {
+    alert('Failed to send data.');
+  }
 }
 
 
   return (
-    <div className="flex h-full flex-col items-center px-3 py-4 md:px-2">
+    <div className="flex  h-full flex-col items-center px-3 py-4 md:px-2">
       <h1 className="text-2xl font-bold">Formulario</h1>
       <Button />
       {location && (
@@ -46,6 +46,7 @@ async function  handler (e: React.FormEvent<HTMLFormElement>){
         <input
           className="mb-4 py-2 px-4 border border-gray-300 rounded-md"
           type="text"
+          id="especie"
           name="especie"
           value={data.especie}
           onChange={(e) => setData({ ...data, especie: e.target.value })}        />
@@ -55,6 +56,7 @@ async function  handler (e: React.FormEvent<HTMLFormElement>){
         <select
           className="mb-4 py-2 px-4 border border-gray-300 rounded-md"
           name="municipio"
+          id='municipio'
           value={data.municipio}
           onChange={(e) => setData({ ...data, municipio: e.target.value })} 
         >
@@ -71,13 +73,14 @@ async function  handler (e: React.FormEvent<HTMLFormElement>){
         <input
           className="mb-4 py-2 px-4 border border-gray-300 rounded-md"
           type="text"
+          id='ciudadano'
           value={data.ciudadano}
           name="ciudadano"
           onChange={(e) => setData({ ...data, ciudadano: e.target.value })}
         />
 
         <button
-          className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-md"
+          className="mt-4 py-2 px-4 bg-red-500 text-white rounded-md"
           type="submit"
         >
           Enviar

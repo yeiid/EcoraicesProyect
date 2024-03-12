@@ -5,18 +5,21 @@ import { CombinedState } from "@/app/lib/types";
 
 
 
-export async function GET (){
-  const Especie = await prisma.especie.findMany()
-
-  console.log(Especie)
-  return NextResponse.json(Especie);
-
+export async function GET() {
+  try {
+    const especies = await prisma.especie.findMany();
+    console.log('estoy bajando datos')
+    return NextResponse.json(especies);
+  } catch (error) {
+    console.error('Error al obtener las especies:', error);
+    return NextResponse.error();
+  }
 }
 
 export  async function POST(req: NextRequest, res: NextResponse) {
   // Obtiene el cuerpo de la petición
   const body:CombinedState= await req.json();
-  console.log(body)
+  // console.log(body)
   // Validar datos con Zod
   try {
     const result = schema.safeParse(body);

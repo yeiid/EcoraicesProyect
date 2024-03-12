@@ -31,3 +31,13 @@ export interface CombinedState {
   location: { lat: number; lng: number },
 
 }
+
+
+export interface Especie {
+  id: number;
+  especie: string;
+  municipio: string;
+  ciudadano: string;
+  latitud: number;
+  longitud: number;
+}
