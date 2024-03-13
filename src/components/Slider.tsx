@@ -6,9 +6,9 @@ const SimpleSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
-    { id: 1, src: '/public/paisaje.jpg', alt: 'Slider 1' },
-    { id: 2, src: '/public/350751.jpg', alt: 'Slider 2' },
-    { id: 3, src: '/public/350751.jpg', alt: 'Slider 3' },
+    { id: 1, src: '/350751.jpg', alt: 'Slider 1' },
+    { id: 2, src: '/350751.jpg', alt: 'Slider 2' },
+    { id: 3, src: '/paisaje.jpg', alt: 'Slider 3' },
   ];
 
   const handlePrevClick = () => {

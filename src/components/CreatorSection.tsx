@@ -16,10 +16,10 @@ interface CreatorSectionProps {
 const CreatorSection: React.FC<CreatorSectionProps> = ({ creators }) => {
   return (
     <div className="creators-section w-full max-w-4xl mt-10 text-center">
-      <h2 className="text-2xl font-bold mb-4">Creadores</h2>
+      <h2 className="text-2xl font-bold mb-4">proyectos</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {creators.map((creator) => (
-          <div key={creator.id} className="p-4 bg-white shadow rounded">
+          <div key={creator.id} className="p-4 bg-red-500 shadow rounded">
             <Image
               src={creator.image}
               alt={creator.alt}

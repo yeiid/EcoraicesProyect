@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import {Especie} from '@/app/lib/types'
 
-
 const MapComponent = () => {
   const [especies, setEspecies] = useState<Especie[]>([]);
 
@@ -41,7 +40,7 @@ const MapComponent = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {especies.map((especie) => (
-        <Marker key={especie.id} position={[especie.latitud, especie.longitud]}>
+        <Marker key={especie.id} position={[especie.latitud, especie.longitud] } >
           <Popup>
             <div>
               <h2>{especie.especie}</h2>

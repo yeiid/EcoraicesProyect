@@ -29,8 +29,7 @@ export default function About() {
   <div className="bg-gray-200 p-4 rounded-md mb-4">
     <h2 className="text-2xl font-bold mb-2">¿Qué es EcoRaices?</h2>
     <p className="text-lg">
-      EcoRaices es una iniciativa desarrollada por un equipo
-        interdisciplinario de ingenieros ambientales y programadores,
+      EcoRaices es una iniciativa desarrollada por  Yeifran Hernandez,
         comprometidos con la protección del medio ambiente y el uso de
         la tecnología para el bien común. Nuestro objetivo es
         geolocalizar y documentar las especies arbóreas presentes en las
