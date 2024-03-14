@@ -1,17 +1,25 @@
+import dynamic from "next/dynamic";
 
-import dynamic from 'next/dynamic';
-
-const MapComponent = dynamic(() => import('@/components/Map'), {
+const MapComponent = dynamic(() => import("@/components/Map"), {
   ssr: false,
 });
+
+// const MapComponent2 = dynamic(() => import("@/components/Map2"), {
+//   ssr: false,
+// });
 export default function Page() {
   return (
-<>
-    <div className='flex item-center py-5'>
-    <h2>Localizacion actaul</h2>
-      <MapComponent />
-    </div>
+    <>
+      <div className="flex h-full flex-col items-center px-3 py-4 md:px-2">
 
+        <div className="py20 flex items-center">
+        <h2>Localizacion actaul</h2>
+          <MapComponent/>
+        </div>
+        {/* <div className="py0 flex items-center">
+          <MapComponent2 />
+        </div> */}
+      </div>
     </>
   );
 }

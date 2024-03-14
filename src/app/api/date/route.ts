@@ -4,7 +4,6 @@ import {prisma} from '@/app/lib/prisma'
 import { CombinedState } from "@/app/lib/types";
 
 
-
 export async function GET() {
   try {
     const especies = await prisma.especie.findMany();
@@ -19,7 +18,7 @@ export async function GET() {
 export  async function POST(req: NextRequest, res: NextResponse) {
   // Obtiene el cuerpo de la petición
   const body:CombinedState= await req.json();
-  // console.log(body)
+
   // Validar datos con Zod
   try {
     const result = schema.safeParse(body);
@@ -38,7 +37,6 @@ export  async function POST(req: NextRequest, res: NextResponse) {
     latitud: body.location.lat,
     longitud: body.location.lng,
   };
-
   try {
     // Crear un nuevo registro en la tabla "Especie" usando Prisma
     const createdEspecie = await prisma.especie.create({

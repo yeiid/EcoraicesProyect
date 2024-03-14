@@ -6,12 +6,14 @@ import {
   UserGroupIcon,
   HomeIcon,
   DocumentDuplicateIcon,
-  MapIcon
+  MapIcon,
+  CircleStackIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 const links = [
-  { name: 'Home', href: '/ui', icon: HomeIcon },
+  { name: 'Home', href: '/', icon: HomeIcon },
+  { name: 'Form', href: '/ui', icon: CircleStackIcon },
   {
     name: 'About',
     href: '/ui/about',
