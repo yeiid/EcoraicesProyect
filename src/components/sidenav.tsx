@@ -6,6 +6,7 @@ export default function SideNav() {
     <div className="flex h-full flex-col px-3 py-4 md:px-2">
       <div className="hidden md:block">
         <Image
+        className="w-40"
           src="/Ecoj (1).png"
           alt="Logo"
           width={250}

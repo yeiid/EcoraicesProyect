@@ -16,9 +16,6 @@ export default function Page() {
         <h2>Localizacion actaul</h2>
           <MapComponent/>
         </div>
-        {/* <div className="py0 flex items-center">
-          <MapComponent2 />
-        </div> */}
       </div>
     </>
   );

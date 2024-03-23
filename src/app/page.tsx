@@ -2,34 +2,12 @@
 
 import Link from "next/link";
 import clsx from "clsx";
-import SimpleSlider from "@/components/Slider";
+import Slider from "@/components/Slider";
 import InformativeSection from "@/components/IfonComponent";
 import Image from "next/image";
 
 export default function Page() {
-  const creators = [
-    {
-      id: 1,
-      name: "Creador 1",
-      image: "/350751.jpg",
-      alt: "Imagen del creador 1",
-      description: "Breve descripción del creador 1",
-    },
-    {
-      id: 2,
-      name: "Creador 2",
-      image: "/paisaje.jpg",
-      alt: "Imagen del creador 2",
-      description: "Breve descripción del creador 2",
-    },
-    {
-      id: 3,
-      name: "Creador 3",
-      image: "/path/to/creator3-image.jpg",
-      alt: "Imagen del creador 3",
-      description: "Breve descripción del creador 3",
-    },
-  ];
+
   return (
     <>
       <section className=" flex flex-col items-center w-full  text-center">
@@ -72,8 +50,8 @@ export default function Page() {
             </Link>
           </div>
         </section>
-        <div className=" w-full max-w-4xl mt-10">
-          <SimpleSlider />
+        <div className=" w-full max-w-4xl m-10">
+          <Slider />
         </div>
         <div className=" flex flex-col items-center justify-center ">
           {/* <CreatorSection creators={creators} /> */}
