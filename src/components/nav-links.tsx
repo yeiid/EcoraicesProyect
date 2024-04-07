@@ -7,7 +7,8 @@ import {
   HomeIcon,
   DocumentDuplicateIcon,
   MapIcon,
-  CircleStackIcon
+  CircleStackIcon,
+  Square2StackIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
@@ -20,7 +21,8 @@ const links = [
     icon: DocumentDuplicateIcon,
   },
   { name: 'Help', href: '/ui/help', icon: UserGroupIcon },
-  { name: 'MAP', href: '/ui/map', icon: MapIcon }
+  { name: 'MAP', href: '/ui/map', icon: MapIcon },
+  { name: 'SPECIES', href: '/ui/specie', icon: Square2StackIcon }
 ];
 
 export default function NavLinks() {

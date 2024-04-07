@@ -41,3 +41,13 @@ export interface Especie {
   latitud: number;
   longitud: number;
 }
+
+
+export interface Species {
+  scientificNameSimple: string;
+  description: string;
+  genus : string
+  invasive : string
+  assessment :string
+  kingdom  : string
+}

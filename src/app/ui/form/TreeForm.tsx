@@ -41,7 +41,7 @@ const Formulario: React.FC = () => {
   }
 
   return (
-    <div className="flex h-full flex-col items-center px-3 py-4 md:px-2 bg-gray-300">
+    <div className="flex h-full flex-col items-center px-3 py-4 md:px-2 ">
       <h1 className="text-2xl font-bold">Formulario</h1>
       <Button />
       {location && (

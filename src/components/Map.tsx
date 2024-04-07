@@ -40,8 +40,8 @@ const MapComponent = () => {
   return (
     <MapContainer
       center={[10.9753248, -72.7924497]}
-      zoom={15}
-      style={{ width: '600px', height: '500px' }}
+      zoom={10}
+      style={{ width: '450px', height: '400px' }}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
