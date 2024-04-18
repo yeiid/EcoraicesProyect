@@ -3,7 +3,6 @@
 import Link from "next/link";
 import clsx from "clsx";
 import Slider from "@/components/Slider";
-import InformativeSection from "@/components/IfonComponent";
 import Image from "next/image";
 
 export default function Page() {
@@ -11,20 +10,6 @@ export default function Page() {
   return (
     <>
       <section className=" flex flex-col items-center w-full  text-center">
-        {/* <div className="flex items-center flex-col w-full max-w-4xl mt-10">
-          <Image src="/Ecoj (1).png" alt="" width={250} height={250}/>
-        <button>
-          <Link
-            href={"/ui"}
-            className={clsx(
-              "flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
-            )}
-          >
-            Empecemos
-          </Link>
-        </button>
-
-        </div> */}
         <section className=" py-10 flex items-center flex-col w-full max-w-4xl ">
           <div className="container mx-auto flex flex-col items-center justify-center">
             <div className="max-w-lg text-center  flex items-center flex-col">
@@ -52,10 +37,6 @@ export default function Page() {
         </section>
         <div className=" w-full max-w-4xl m-10">
           <Slider />
-        </div>
-        <div className=" flex flex-col items-center justify-center ">
-          {/* <CreatorSection creators={creators} /> */}
-          <InformativeSection />
         </div>
       </section>
     </>
