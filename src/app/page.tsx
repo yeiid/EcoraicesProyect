@@ -4,6 +4,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import Slider from "@/components/Slider";
 import Image from "next/image";
+import Footer from "@/components/Footer";
 
 export default function Page() {
 
@@ -38,6 +39,7 @@ export default function Page() {
         <div className=" w-full max-w-4xl m-10">
           <Slider />
         </div>
+        <Footer/>
       </section>
     </>
   );

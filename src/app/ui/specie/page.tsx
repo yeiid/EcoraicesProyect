@@ -1,9 +1,10 @@
-import SpeciesList from "@/components/SpeciesList";
+// import SpeciesList from "@/components/SpeciesList";
 
 const page = () => {
   return (
     <>
-      <SpeciesList />
+      {/* <SpeciesList /> */}
+      
     </>
   );
 };
