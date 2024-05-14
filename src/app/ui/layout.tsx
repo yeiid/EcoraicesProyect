@@ -1,4 +1,4 @@
-import SideNav from "@/components/sidenav";
+import SideNav from "@/components/header/sidenav";
 import Footer from "@/components/Footer";
 import { FormContext } from "@/context/UserContext";
 import "leaflet/dist/leaflet.css";
@@ -13,12 +13,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
           <FormContext>
             {children}
-            <Footer />
           </FormContext>
+          <div className="m-auto">
+          <Footer/>
+          </div>
         </div>
-  
       </div>
-      
     </>
   );
 }

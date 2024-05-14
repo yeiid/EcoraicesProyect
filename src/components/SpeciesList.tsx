@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react';
-import { GET } from '@/app/api/date/apiService';
+// import { GET } from '@/app/api/date/apiService';
 
 import {Species} from '@/app/lib/types'
 

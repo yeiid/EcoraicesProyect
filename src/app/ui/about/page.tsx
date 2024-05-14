@@ -4,7 +4,7 @@
 export default function About() { 
   return (
     <>
-<section className="Ncontainer  rounded-md p-4">
+<section className="  rounded-md p-4">
   <div className="bg-gray-200 p-4 rounded-md mb-4">
     <div className="img">
       {/* <Image 

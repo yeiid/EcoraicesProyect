@@ -1,9 +1,25 @@
-import React from "react";
+import {
+  HomeIcon,
+  DocumentDuplicateIcon,
+  MapIcon,
+  CircleStackIcon,
+} from "@heroicons/react/24/outline";
+import Link from "next/link";
+const links = [
+  { name: "Home", href: "/", icon: HomeIcon },
+  { name: "Form", href: "/ui", icon: CircleStackIcon },
+  {
+    name: "About",
+    href: "/ui/about",
+    icon: DocumentDuplicateIcon,
+  },
+  { name: "MAP", href: "/ui/map", icon: MapIcon },
+];
 
 import {} from "@heroicons/react/24/outline";
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white">
+    <footer className="bg-gray-800 text-white ">
       <div className="container mx-auto py-8 px-4">
         <div className="grid grid-cols-3 gap-4">
           <div>
@@ -15,22 +31,20 @@ const Footer = () => {
           </div>
           <div>
             <h3 className="text-2xl font-bold mb-4">Enlaces</h3>
-            <ul>
-              <li className="mb-2">
-                <a href="#" className="text-gray-400 hover:text-white">
-                  Inicio
-                </a>
-              </li>
-              <li className="mb-2">
-                <a href="#" className="text-gray-400 hover:text-white">
-                  Servicios
-                </a>
-              </li>
-              <li className="mb-2">
-                <a href="#" className="text-gray-400 hover:text-white">
-                  Contacto
-                </a>
-              </li>
+            <ul className="flex m-2 md: flex-col">
+              {links.map((link) => {
+                const LinkIcon = link.icon;
+                return (
+                  <>
+                    <Link
+                      href={link.href}
+                      className=" w-6 text-gray-400 hover:text-white"
+                    >
+                      <LinkIcon />
+                    </Link>
+                  </>
+                );
+              })}
             </ul>
           </div>
           <div>
