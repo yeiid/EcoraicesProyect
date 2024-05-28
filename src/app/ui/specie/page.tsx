@@ -1,9 +1,9 @@
-// import SpeciesList from "@/components/SpeciesList";
-
+import SpeciesList from "@/components/SpeciesList";
+import dar from "@/mook/dat.json"
 const page = () => {
   return (
     <>
-      {/* <SpeciesList /> */}
+      <SpeciesList species={dar} />
       
     </>
   );

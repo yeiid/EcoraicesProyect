@@ -1,29 +1,29 @@
-// "use client";
+"use client";
 
 import Link from "next/link";
 import clsx from "clsx";
 import Slider from "@/components/Slider";
 import Image from "next/image";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
+import DevelopersSection from "@/components/DevelopersSection";
+import SpeciesSection from "@/components/SpeciesSection";
+import ProjectsSection from "@/components/ProjectsSection";
+import MarketingSection from "@/components/MarketingSection ";
+import DonationsSection from "@/components/DonationsSection ";
 
 export default function Page() {
-
   return (
     <>
-      <section className=" flex flex-col items-center w-full  text-center">
-        <section className=" py-10 flex items-center flex-col w-full max-w-4xl ">
+      <section className="flex flex-col items-center w-full text-center">
+        <section className="py-10 flex items-center flex-col w-full max-w-4xl">
           <div className="container mx-auto flex flex-col items-center justify-center">
-            <div className="max-w-lg text-center  flex items-center flex-col">
+            <div className="max-w-lg text-center flex items-center flex-col">
               <Image src="/Ecoj (1).png" alt="Logo" width={250} height={250} />
               <h2 className="text-3xl font-bold text-white mt-6">
-              ¡Bienvenidos a EcoRaices!
+                ¡Bienvenidos a EcoRaices!
               </h2>
               <p className="text-lg text-white mt-4">
-                 Descubre la biodiversidad urbana de
-                los municipios guajiros con EcoRaices. Nuestra plataforma te
-                permite geolocalizar y documentar las especies arbóreas que
-                embellecen nuestras calles y plazas. Únete a nuestra comunidad y
-                juntos, protejamos y conservemos nuestro entorno.
+                Descubre la biodiversidad urbana de los municipios guajiros con EcoRaices. Nuestra plataforma te permite geolocalizar y documentar las especies arbóreas que embellecen nuestras calles y plazas. Únete a nuestra comunidad y juntos, protejamos y conservemos nuestro entorno.
               </p>
             </div>
             <Link
@@ -36,10 +36,15 @@ export default function Page() {
             </Link>
           </div>
         </section>
-        <div className=" w-full max-w-4xl m-10">
+        <div className="w-full max-w-4xl m-10">
           <Slider />
         </div>
-        <Footer/>
+        <SpeciesSection />
+        <ProjectsSection />
+        <MarketingSection />
+        <DonationsSection />
+        <DevelopersSection />
+        {/* <Footer /> */}
       </section>
     </>
   );

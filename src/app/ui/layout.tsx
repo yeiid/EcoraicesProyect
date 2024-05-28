@@ -1,5 +1,5 @@
 import SideNav from "@/components/header/sidenav";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 import { FormContext } from "@/context/UserContext";
 import "leaflet/dist/leaflet.css";
 
@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {children}
           </FormContext>
           <div className="m-auto">
-          <Footer/>
+          {/* <Footer/> */}
           </div>
         </div>
       </div>

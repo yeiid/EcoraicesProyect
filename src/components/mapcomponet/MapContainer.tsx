@@ -16,7 +16,7 @@ const MapContain: React.FC<MapContainProps> = ({ especies }) => {
   });
 
   return (
-    <div>
+    <div className="p-4 bg-white rounded-lg shadow-md">
       <MapContainer
         center={[10.9753248, -72.7924497]}
         zoom={10}
