@@ -1,51 +1,63 @@
 "use client";
 
-import Link from "next/link";
-import clsx from "clsx";
-import Slider from "@/components/Slider";
-import Image from "next/image";
-// import Footer from "@/components/Footer";
-import DevelopersSection from "@/components/DevelopersSection";
-import SpeciesSection from "@/components/SpeciesSection";
-import ProjectsSection from "@/components/ProjectsSection";
-import MarketingSection from "@/components/MarketingSection ";
-import DonationsSection from "@/components/DonationsSection ";
+import Slider from "@/components/homecomponet/Slider";
+import InicioSection from "@/components/homecomponet/InicioSection";
+import DevelopersSection from "@/components/homecomponet/DevelopersSection";
+import SpeciesSection from "@/components/homecomponet/SpeciesSection";
+// import ProjectsSection from "@/components/homecomponet/ProjectsSection";
+import MarketingSection from "@/components/homecomponet/MarketingSection ";
+import DonationsSection from "@/components/homecomponet/DonationsSection ";
 
 export default function Page() {
   return (
     <>
-      <section className="flex flex-col items-center w-full text-center">
-        <section className="py-10 flex items-center flex-col w-full max-w-4xl">
-          <div className="container mx-auto flex flex-col items-center justify-center">
-            <div className="max-w-lg text-center flex items-center flex-col">
-              <Image src="/Ecoj (1).png" alt="Logo" width={250} height={250} />
-              <h2 className="text-3xl font-bold text-white mt-6">
-                ¡Bienvenidos a EcoRaices!
-              </h2>
-              <p className="text-lg text-white mt-4">
-                Descubre la biodiversidad urbana de los municipios guajiros con EcoRaices. Nuestra plataforma te permite geolocalizar y documentar las especies arbóreas que embellecen nuestras calles y plazas. Únete a nuestra comunidad y juntos, protejamos y conservemos nuestro entorno.
-              </p>
-            </div>
-            <Link
-              href="/ui"
-              className={clsx(
-                "mt-8 bg-gray-50 text-green-500 py-3 px-8 text-lg font-medium rounded-full uppercase transition duration-300 hover:bg-sky-100 hover:text-blue-600"
-              )}
-            >
-              Empecemos
-            </Link>
-          </div>
-        </section>
-        <div className="w-full max-w-4xl m-10">
+      <section className="flex flex-col items-center w-full text-center  animated-background py-10">
+        <InicioSection />
+        <div className="w-full max-w-4xl my-10">
           <Slider />
         </div>
         <SpeciesSection />
-        <ProjectsSection />
+        {/* <ProjectsSection /> */}
         <MarketingSection />
         <DonationsSection />
         <DevelopersSection />
-        {/* <Footer /> */}
       </section>
+
+      {/* Background animation */}
+      {/* <style jsx>{`
+        section {
+          position: relative;
+          overflow: hidden;
+        }
+        section::before {
+          content: "";
+          position: absolute;
+          top: -50px;
+          left: -50px;
+          width: 300px;
+          height: 300px;
+          background: radial-gradient(circle, rgba(0, 123, 255, 0.3), transparent 70%);
+          animation: move 10s infinite alternate;
+        }
+        section::after {
+          content: "";
+          position: absolute;
+          bottom: -50px;
+          right: -50px;
+          width: 300px;
+          height: 300px;
+          background: radial-gradient(circle, rgba(0, 123, 255, 0.3), transparent 70%);
+          animation: move 8s infinite alternate-reverse;
+        }
+        @keyframes move {
+          0% {
+            transform: translate(0, 0);
+          }
+          100% {
+            transform: translate(50px, 50px);
+          }
+        }
+      `}</style> */}
     </>
   );
 }

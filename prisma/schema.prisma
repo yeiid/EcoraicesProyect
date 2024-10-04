@@ -4,19 +4,35 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // Uses connection pooling (recommended)
   url      = env("POSTGRES_PRISMA_URL")
 }
 
 model Especie {
-  id           Int      @id @default(autoincrement())
-  createId     DateTime @default(now())
-  especie      String
-  municipio    String
-  ciudadano    String
-  latitud      Float    // Stores latitude as a decimal number
-  longitud     Float    // Stores longitude as a decimal number
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  especie   String
+  municipio String
+  ciudadano String
+  latitud   Float
+  longitud  Float
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
 
-  // Restrict duplicate coordinates (optional)
   @@unique([latitud, longitud])
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  name       String
+  email      String    @unique
+  userType   UserType
+  groupName  String?
+  groupAdmin String?
+  especies   Especie[]
+}
+
+enum UserType {
+  NORMAL
+  GROUP
+  COMMUNITY
 }

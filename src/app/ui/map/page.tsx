@@ -1,8 +1,10 @@
 import dynamic from "next/dynamic";
+// const MapComponent = dynamic(() => import("@/components/mapcomponet/Map"), {
+//   ssr: false,
+// });
 const MapComponent = dynamic(() => import("@/components/mapcomponet/Map"), {
-  ssr: false,
+  loading: () => <p>Loading...</p>,
 });
- 
 // const MapComponent2 = dynamic(() => import("@/components/Map2"), {
 //   ssr: false,
 // });
@@ -16,7 +18,7 @@ export default function Page() {
           <MapComponent/>
           </div>
         </div>
-      </div>
+      </div> 
     </>
   );
 }

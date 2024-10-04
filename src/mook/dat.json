@@ -1,53 +1,62 @@
 [
-    {
-      "localName": "Caoba",
-      "scientificName": "Swietenia macrophylla",
-      "description": "Árbol de madera preciosa conocido por su belleza y valor económico."
-    },
-    {
-      "localName": "Roble",
-      "scientificName": "Quercus",
-      "description": "Género que incluye varias especies de robles, árboles de hoja caduca."
-    },
-    {
-      "localName": "Cedro",
-      "scientificName": "Cedrela odorata",
-      "description": "Árbol de madera aromática, utilizada en la fabricación de muebles y construcción."
-    },
-    {
-      "localName": "Níspero",
-      "scientificName": "Manilkara zapota",
-      "description": "Árbol frutal que produce frutos dulces conocidos como nísperos."
-    },
-    {
-      "localName": "Mango",
-      "scientificName": "Mangifera indica",
-      "description": "Árbol frutal tropical muy cultivado por su delicioso fruto, el mango."
-    },
-    {
-      "localName": "Palma de Coco",
-      "scientificName": "Cocos nucifera",
-      "description": "Árbol de la familia de las palmeras, cuyo fruto es el coco."
-    },
-    {
-      "localName": "Tamarindo",
-      "scientificName": "Tamarindus indica",
-      "description": "Árbol tropical que produce vainas de tamarindo, utilizadas en la cocina y como remedio."
-    },
-    {
-      "localName": "Majagua",
-      "scientificName": "Hibiscus tiliaceus",
-      "description": "Árbol de la familia de las malváceas, conocido por su madera y su fibra."
-    },
-    {
-      "localName": "Ceiba",
-      "scientificName": "Ceiba pentandra",
-      "description": "Árbol majestuoso de la selva tropical, conocido por su tronco espinoso y su madera ligera."
-    },
-    {
-      "localName": "Guayacán",
-      "scientificName": "Tabebuia guayacan",
-      "description": "Árbol ornamental de la familia de las bignoniáceas, conocido por sus hermosas flores amarillas."
-    }
-  ]
-  
+  {
+    "localName": "Caoba",
+    "scientificName": "Swietenia macrophylla",
+    "description": "Árbol de madera preciosa conocido por su belleza y valor económico.",
+    "images": ["/ceiba.jpg", "/ceiba.jpg"]
+  },
+  {
+    "localName": "Roble",
+    "scientificName": "Quercus",
+    "description": "Género que incluye varias especies de robles, árboles de hoja caduca.",
+    "images": ["/ceiba.jpg", "/melocactus.jpg"]
+  },
+  {
+    "localName": "Cedro",
+    "scientificName": "Cedrela odorata",
+    "description": "Árbol de madera aromática, utilizada en la fabricación de muebles y construcción.",
+    "images": ["/cedro1.jpg", "/cedro2.jpg"]
+  },
+  {
+    "localName": "Níspero",
+    "scientificName": "Manilkara zapota",
+    "description": "Árbol frutal que produce frutos dulces conocidos como nísperos.",
+    "images": ["/nispero1.jpg", "/nispero2.jpg"]
+  },
+  {
+    "localName": "Mango",
+    "scientificName": "Mangifera indica",
+    "description": "Árbol frutal tropical muy cultivado por su delicioso fruto, el mango.",
+    "images": ["/mango1.jpg", "/mango2.jpg"]
+  },
+  {
+    "localName": "Palma de Coco",
+    "scientificName": "Cocos nucifera",
+    "description": "Árbol de la familia de las palmeras, cuyo fruto es el coco.",
+    "images": ["/palma1.jpg", "/palma2.jpg"]
+  },
+  {
+    "localName": "Tamarindo",
+    "scientificName": "Tamarindus indica",
+    "description": "Árbol tropical que produce vainas de tamarindo, utilizadas en la cocina y como remedio.",
+    "images": ["/tamarindo1.jpg", "/tamarindo2.jpg"]
+  },
+  {
+    "localName": "Majagua",
+    "scientificName": "Hibiscus tiliaceus",
+    "description": "Árbol de la familia de las malváceas, conocido por su madera y su fibra.",
+    "images": ["/majagua1.jpg", "/majagua2.jpg"]
+  },
+  {
+    "localName": "Ceiba",
+    "scientificName": "Ceiba pentandra",
+    "description": "Árbol majestuoso de la selva tropical, conocido por su tronco espinoso y su madera ligera.",
+    "images": ["/ceiba1.jpg", "/ceiba2.jpg"]
+  },
+  {
+    "localName": "Guayacán",
+    "scientificName": "Tabebuia guayacan",
+    "description": "Árbol ornamental de la familia de las bignoniáceas, conocido por sus hermosas flores amarillas.",
+    "images": ["/guayacan1.jpg", "/guayacan2.jpg"]
+  }
+]

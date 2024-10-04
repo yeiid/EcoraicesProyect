@@ -2,7 +2,7 @@
 const Ayuda = () => {
   return (
     <>
-      <div className="rounded-md p-4">
+      <div className="rounded-md p-4 ">
         <div className="bg-gray-200 p-4 rounded-md mb-4">
           <h2 className="text-2xl font-bold mb-2">¿Necesitas ayuda?</h2>
           <p className="text-lg">Si tienes alguna duda o problema en el uso de nuestra plataforma, te ofrecemos la siguiente información que puede serte de ayuda</p>

@@ -1,18 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
 import { Especie } from "@/app/lib/types";
-import MapContain from "./MapContainer";
-import SearchMapContain from "./SearchMapContainer"; // Nuevo componente para el mapa de búsqueda
+import { MagnifyingGlassIcon, MapIcon } from '@heroicons/react/24/outline';
 
-const Map = () => {
+const CustomIcon = new L.Icon({
+  iconUrl: '/marker-icon.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+
+const ImprovedMapComponent: React.FC = () => {
   const [especies, setEspecies] = useState<Especie[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<Especie[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [searchResults, setSearchResults] = useState<Especie[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch("/api/date");
         if (!response.ok) {
@@ -20,21 +30,19 @@ const Map = () => {
         }
         const data = await response.json();
         setEspecies(data);
-        setError(null); // Limpiar cualquier error previo
+        setError(null);
       } catch (error) {
         console.error(error);
-        setError(
-          "Hubo un problema al obtener los datos. Por favor, intenta de nuevo más tarde."
-        );
+        setError("Hubo un problema al obtener los datos. Por favor, intenta de nuevo más tarde.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchData();
-    const intervalId = setInterval(fetchData, 120000); // Actualizar los datos cada 2 minutos
+    const intervalId = setInterval(fetchData, 120000);
 
-    return () => {
-      clearInterval(intervalId); // Limpiar el intervalo cuando el componente se desmonta
-    };
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleSearch = () => {
@@ -45,39 +53,96 @@ const Map = () => {
   };
 
   return (
-    <>
-      <div className="flex justify-center mb-4">
-        <div>
-          <h2>Busca las especies mapeadas</h2>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-6 text-center">Mapa de Especies</h1>
+      
+      <div className="mb-6">
+        <div className="flex items-center justify-center">
           <input
             type="text"
             placeholder="Buscar especie..."
-            className="px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-400"
+            className="px-4 py-2 border rounded-l-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 w-64"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button
             onClick={handleSearch}
-            className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-sm hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-400"
+            className="px-4 py-2 bg-blue-500 text-white rounded-r-lg shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            Buscar
+            <MagnifyingGlassIcon className="h-5 w-5" />
           </button>
         </div>
       </div>
-      {error && <div className="text-red-500 mb-4">{error}</div>}
 
-      <div className="flex justify-around flex-col">
-        <div>
-          <h3>Mapa de Búsqueda</h3>
-          <SearchMapContain especies={searchResults} />
+      {error && (
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+          <p>{error}</p>
         </div>
-        <div>
-          <h3>Mapa General</h3>
-          <MapContain especies={especies} />
+      )}
+
+      {isLoading ? (
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+          <p className="mt-2">Cargando datos...</p>
         </div>
-      </div>
-    </>
+      ) : (
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-lg shadow-md p-4">
+            <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <MagnifyingGlassIcon className="h-6 w-6 mr-2 text-blue-500" />
+              Resultados de Búsqueda
+            </h2>
+            {searchResults.length > 0 ? (
+              <ul className="space-y-2">
+                {searchResults.map((especie) => (
+                  <li key={especie.id} className="border-b pb-2">
+                    <span className="font-medium">{especie.especie}</span>
+                    <p className="text-sm text-gray-600">
+                      Ciudadano: {especie.ciudadano}<br />
+                      Municipio: {especie.municipio}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-center text-gray-500">No se encontraron especies</p>
+            )}
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-md p-4">
+            <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <MapIcon className="h-6 w-6 mr-2 text-blue-500" />
+              Mapa General
+            </h2>
+            <MapContainer
+              center={[10.9753248, -72.7924497]}
+              zoom={10}
+              style={{ width: '100%', height: '400px' }}
+              className="rounded-lg"
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {especies.map((especie) => (
+                <Marker key={especie.id} position={[especie.latitud, especie.longitud]} icon={CustomIcon}>
+                  <Popup>
+                    <div>
+                      <h3 className="font-semibold">{especie.especie}</h3>
+                      <p>
+                        Municipio: {especie.municipio}<br />
+                        Ciudadano: {especie.ciudadano}
+                      </p>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default Map;
+export default ImprovedMapComponent;

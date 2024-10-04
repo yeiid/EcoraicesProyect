@@ -1,28 +1,40 @@
 "use client"
 
-import { createContext, useContext, useState, ReactNode } from 'react';
-import { ContextMapProps } from '@/app/lib/types';
 
-// Creación del contexto con valores iniciales
-export const ContextMap = createContext<ContextMapProps | undefined>(undefined);
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-// Hook para usar el contexto
-export const useContextMap = () => {
-  const context = useContext(ContextMap);
-  if (!context) {
-    throw new Error("useContextMap must be used within a ContextMapProvider");
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  userType: 'NORMAL' | 'GROUP' | 'COMMUNITY';
+};
+
+type UserContextType = {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+};
+
+const UserContext = createContext<UserContextType | undefined>(undefined);
+
+type UserProviderProps = {
+  children: ReactNode;
+};
+
+export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (context === undefined) {
+    throw new Error('useUser must be used within a UserProvider');
   }
   return context;
 };
-
-// Proveedor de contexto
-export function FormContext({ children }: { children: ReactNode }): JSX.Element {
-  const [location, setLocation] = useState<ContextMapProps['location']>({ lat: 0, lng: 0 });
-  const [data, setData] = useState<ContextMapProps['data']>({ especie: '', municipio: '', ciudadano: '' });
-
-  return (
-    <ContextMap.Provider value={{ location, setLocation, data, setData }}>
-      {children}
-    </ContextMap.Provider>
-  );
-}

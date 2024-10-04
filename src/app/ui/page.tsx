@@ -1,15 +1,12 @@
-
-
 import Formulario from "./form/TreeForm";
-import 'leaflet/dist/leaflet.css';
+import { UserProvider } from "@/context/UserContext";
 
-
-export default function Page  ()  {
-
+export default function RootLayout() {
   return (
     <>
-      <Formulario />
+      <UserProvider>
+        <Formulario />
+      </UserProvider>
     </>
-
   );
-};
+}

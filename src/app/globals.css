@@ -3,14 +3,95 @@
 @tailwind utilities;
 
 
-.imagen{
-    width: 100%;
-    height: 100%;
-    /* background-image: url(/public/350751.jpg); */
-    /* background-repeat: no-repeat;
-    background-position: center; */
+
+
+
+
+:root {
+  --primary-color: #236e36;
+  --secondary-color: #1bb367;
+  --tertiary-color: #86e7ae;
+  --quaternary-color: #077979;
 }
 
-body {
-    background-color: rgb(124, 182, 137);
-} 
+.animated-background {
+  background: linear-gradient(270deg, var(--primary-color), var(--secondary-color), var(--tertiary-color), var(--quaternary-color));
+}
+
+/* Estilos personalizados */
+.imagen {
+  width: 100%;
+  height: 100%;
+  /* Si decides usar la imagen en el futuro, descomenta las siguientes líneas */
+  /* background-image: url(/public/350751.jpg); */
+  /* background-repeat: no-repeat; */
+  /* background-position: center; */
+}
+
+.image {
+  background-image: url("/public/slaider-paisaje.jpg");
+}
+
+/* Animación flotante */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.floating {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Fondo animado */
+.animated-background {
+  background: linear-gradient(270deg, #236e36, #1bb367, #86e7ae, #077979);
+  background-size: 400% 400%;
+  animation: animatedBackground 15s ease infinite;
+}
+
+@keyframes animatedBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Estilos globales */
+.absolute {
+  position: absolute;
+}
+
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.transition-opacity {
+  transition-property: opacity;
+}
+
+.duration-1000 {
+  transition-duration: 1s;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+.opacity-0 {
+  opacity: 0;
+}

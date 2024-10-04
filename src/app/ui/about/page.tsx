@@ -1,20 +1,22 @@
-// import Image from "next/image";
+import Image from "next/image";
 // import paisaje from "/public/paisaje.jpg" 
 
 export default function About() { 
   return (
     <>
-<section className="  rounded-md p-4">
+<section className="  rounded-md p-4 ">
   <div className="bg-gray-200 p-4 rounded-md mb-4">
+  <h2 className="text-2xl font-bold mb-2">EcoRaices</h2>
     <div className="img">
-      {/* <Image 
-      src={paisaje}
+      <Image 
+      src="/ceiba.jpg"
       alt=""
       width={1000}
       height={1000}
-      quality={75} /> */}
+      // quality={75} 
+      />
     </div>
-    <h2 className="text-2xl font-bold mb-2">EcoRaices</h2>
+    
     <p className="text-lg">
       Bienvenidos a EcoRaices, la plataforma que busca
       geolocalizar y documentar las especies arbóreas presentes en las
