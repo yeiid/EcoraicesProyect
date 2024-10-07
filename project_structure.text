@@ -1,0 +1,96 @@
+- .env
+- .eslintrc.json
+- .gitignore
+- docs
+  - .project_structure_ignore
+- LICENSE
+- next-env.d.ts
+- next.config.js
+- package-lock.json
+- package.json
+- postcss.config.js
+- prisma
+  - migrations
+    - 20241007112717_init
+      - migration.sql
+    - migration_lock.toml
+  - schema.prisma
+- project_structure.text
+- public
+  - ceiba.jpg
+  - Ecoj (1).png
+  - favicon.ico
+  - marker-icon.png
+  - melocactus.jpg
+  - paisaje.jpg
+  - perfil.png
+  - slaider-paisaje.jpg
+  - slaider-paisajefull.jpg
+  - venue_location_icon.svg
+- README.md
+- src
+  - app
+    - api
+      - auth
+        - [...nextauth].ts
+      - date
+        - apiService.ts
+        - NextAuth.ts
+        - route.ts
+      - species
+        - Get.ts
+        - GetId.ts
+        - Post.ts
+    - globals.css
+    - layout.tsx
+    - lib
+      - action.ts
+      - next-auth.d.ts
+      - prisma.ts
+      - schema.ts
+      - types.ts
+    - page.tsx
+    - ui
+      - about
+        - about.tsx
+        - page.tsx
+      - form
+        - Button.tsx
+        - TreeForm.tsx
+      - help
+        - page.tsx
+      - layout.tsx
+      - login
+        - page.tsx
+      - map
+        - page.tsx
+        - SkeletonLoader.tsx
+      - page.tsx
+      - specie
+        - page.tsx
+  - components
+    - Footer.tsx
+    - homecomponet
+      - DevelopersSection.tsx
+      - DonationsSection .tsx
+      - InicioSection.tsx
+      - MarketingSection .tsx
+      - ProjectsSection.tsx
+      - Slider.tsx
+      - SpeciesSection.tsx
+    - mapcomponet
+      - Map.tsx
+    - projects
+      - CommentSection.tsx
+      - ProjectDetail.tsx
+      - ProjectList.tsx
+    - sidenav.tsx
+    - SpeciesList.tsx
+  - mook
+    - dat.json
+  - stores
+    - AuthStore.ts
+    - FormStore.ts
+    - MapStore.ts
+- tailwind.config.ts
+- tsconfig.json

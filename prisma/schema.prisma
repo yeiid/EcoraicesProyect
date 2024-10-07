@@ -1,3 +1,5 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,7 +14,6 @@ model Especie {
   createdAt DateTime @default(now())
   especie   String
   municipio String
-  ciudadano String
   latitud   Float
   longitud  Float
   user      User     @relation(fields: [userId], references: [id])
@@ -25,10 +26,13 @@ model User {
   id         Int       @id @default(autoincrement())
   name       String
   email      String    @unique
-  userType   UserType
+  password   String
+  userType   UserType  @default(NORMAL)
   groupName  String?
   groupAdmin String?
   especies   Especie[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 enum UserType {

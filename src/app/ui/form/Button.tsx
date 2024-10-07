@@ -1,9 +1,10 @@
-"use client"
+// src/components/ui/form/Button.tsx
+"use client";
 
-import { useFormContext } from "@/context/LocationContext";
+import { useFormStore } from "@/stores/FormStore"; // Importar el store de Zustand
 
 const Button: React.FC = () => {
-  const { setLocation } = useFormContext();
+  const { setLocation } = useFormStore();
 
   const handleGetLocation = async () => {
     if (navigator.geolocation) {
@@ -22,7 +23,7 @@ const Button: React.FC = () => {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-        
+
         alert('¡Ubicación obtenida con éxito!');
       } catch (error) {
         console.error('Error al obtener la ubicación:', error);

@@ -1,12 +1,9 @@
-import Formulario from "./form/TreeForm";
-import { UserProvider } from "@/context/UserContext";
+import Formulario from "./form/Form";
 
 export default function RootLayout() {
   return (
     <>
-      <UserProvider>
-        <Formulario />
-      </UserProvider>
+      <Formulario />
     </>
   );
 }

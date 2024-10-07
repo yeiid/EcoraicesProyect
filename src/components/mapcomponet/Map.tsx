@@ -1,49 +1,63 @@
+// src/components/mapcomponet/Map.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
-import { Especie } from "@/app/lib/types";
-import { MagnifyingGlassIcon, MapIcon } from '@heroicons/react/24/outline';
+import React, { useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import L from "leaflet";
+import { MagnifyingGlassIcon, MapIcon } from "@heroicons/react/24/outline";
+import { useMapStore } from "@/stores/MapStore";
+import { useAuthStore } from "@/stores/AuthStore";
+import { EspecieExtended } from "@/app/lib/types";
 
 const CustomIcon = new L.Icon({
-  iconUrl: '/marker-icon.png',
+  iconUrl: "/marker-icon.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
 
-const ImprovedMapComponent: React.FC = () => {
-  const [especies, setEspecies] = useState<Especie[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [searchResults, setSearchResults] = useState<Especie[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+const Map: React.FC = () => {
+  const {
+    especies,
+    searchTerm,
+    searchResults,
+    error,
+    isLoading,
+    setEspecies,
+    setSearchTerm,
+    setSearchResults,
+    setError,
+    setIsLoading,
+  } = useMapStore();
+
+  const { user } = useAuthStore();
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch("/api/date");
+        const response = await fetch("/api/species/Get"); // Asegúrate de que la ruta es correcta
         if (!response.ok) {
           throw new Error("Error al obtener los datos");
         }
-        const data = await response.json();
+        const data: EspecieExtended[] = await response.json();
         setEspecies(data);
         setError(null);
       } catch (error) {
         console.error(error);
-        setError("Hubo un problema al obtener los datos. Por favor, intenta de nuevo más tarde.");
+        setError(
+          "Hubo un problema al obtener los datos. Por favor, intenta de nuevo más tarde."
+        );
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-    const intervalId = setInterval(fetchData, 120000);
+    const intervalId = setInterval(fetchData, 120000); // Actualizar cada 2 minutos
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [setEspecies, setError, setIsLoading]);
 
   const handleSearch = () => {
     const results = especies.filter((especie) =>
@@ -55,7 +69,7 @@ const ImprovedMapComponent: React.FC = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6 text-center">Mapa de Especies</h1>
-      
+
       <div className="mb-6">
         <div className="flex items-center justify-center">
           <input
@@ -75,7 +89,10 @@ const ImprovedMapComponent: React.FC = () => {
       </div>
 
       {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+        <div
+          className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4"
+          role="alert"
+        >
           <p>{error}</p>
         </div>
       )}
@@ -98,17 +115,20 @@ const ImprovedMapComponent: React.FC = () => {
                   <li key={especie.id} className="border-b pb-2">
                     <span className="font-medium">{especie.especie}</span>
                     <p className="text-sm text-gray-600">
-                      Ciudadano: {especie.ciudadano}<br />
                       Municipio: {especie.municipio}
+                      <br />
+                      {/* Usuario: {especie.user?.name || "Desconocido"} */}
                     </p>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-center text-gray-500">No se encontraron especies</p>
+              <p className="text-center text-gray-500">
+                No se encontraron especies
+              </p>
             )}
           </div>
-          
+
           <div className="bg-white rounded-lg shadow-md p-4">
             <h2 className="text-xl font-semibold mb-4 flex items-center">
               <MapIcon className="h-6 w-6 mr-2 text-blue-500" />
@@ -117,7 +137,7 @@ const ImprovedMapComponent: React.FC = () => {
             <MapContainer
               center={[10.9753248, -72.7924497]}
               zoom={10}
-              style={{ width: '100%', height: '400px' }}
+              style={{ width: "100%", height: "400px" }}
               className="rounded-lg"
             >
               <TileLayer
@@ -125,13 +145,18 @@ const ImprovedMapComponent: React.FC = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               {especies.map((especie) => (
-                <Marker key={especie.id} position={[especie.latitud, especie.longitud]} icon={CustomIcon}>
+                <Marker
+                  key={especie.id}
+                  position={[especie.latitud, especie.longitud]}
+                  icon={CustomIcon}
+                >
                   <Popup>
                     <div>
                       <h3 className="font-semibold">{especie.especie}</h3>
                       <p>
-                        Municipio: {especie.municipio}<br />
-                        Ciudadano: {especie.ciudadano}
+                        Municipio: {especie.municipio}
+                        <br />
+                        {/* Usuario: {especie.user?.name || "Desconocido"} */}
                       </p>
                     </div>
                   </Popup>
@@ -145,4 +170,4 @@ const ImprovedMapComponent: React.FC = () => {
   );
 };
 
-export default ImprovedMapComponent;
+export default Map;

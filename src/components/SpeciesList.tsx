@@ -1,5 +1,7 @@
 
 import Image from "next/image";
+
+
 interface Species {
   localName: string;
   scientificName: string;

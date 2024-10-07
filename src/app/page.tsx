@@ -1,11 +1,9 @@
-"use client";
-
 import Slider from "@/components/homecomponet/Slider";
 import InicioSection from "@/components/homecomponet/InicioSection";
 import DevelopersSection from "@/components/homecomponet/DevelopersSection";
 import SpeciesSection from "@/components/homecomponet/SpeciesSection";
-// import ProjectsSection from "@/components/homecomponet/ProjectsSection";
-import MarketingSection from "@/components/homecomponet/MarketingSection ";
+import ProjectsSection from "@/components/homecomponet/ProjectsSection";
+// import MarketingSection from "@/components/homecomponet/MarketingSection ";
 import DonationsSection from "@/components/homecomponet/DonationsSection ";
 
 export default function Page() {
@@ -17,8 +15,8 @@ export default function Page() {
           <Slider />
         </div>
         <SpeciesSection />
-        {/* <ProjectsSection /> */}
-        <MarketingSection />
+        <ProjectsSection />
+        {/* <MarketingSection /> */}
         <DonationsSection />
         <DevelopersSection />
       </section>

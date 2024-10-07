@@ -36,7 +36,7 @@
     "src/app/api/index.ts",
     "src/app/ui/form/From.jsx",
     "src/app/api/route.js",
-    "src/app/ui/form/TreeForm.tsx",
+    "src/app/ui/form/Form.tsx",
     "src/components/Map2.jsx"
   ],
   "exclude": ["node_modules"]

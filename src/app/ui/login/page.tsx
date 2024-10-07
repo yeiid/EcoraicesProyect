@@ -1,32 +1,44 @@
-"use client"
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { UserIcon, EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline';
-
-interface FormData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+"use client";
+import React, { ChangeEvent, FormEvent } from "react";
+import { useAuthStore } from "@/stores/AuthStore";
+import {
+  UserIcon,
+  EnvelopeIcon,
+  LockClosedIcon,
+} from "@heroicons/react/24/outline";
+import { User } from "@/app/lib/types"; // Importar el tipo de usuario desde types
+import { UserType } from "@/app/lib/types";
 
 const AuthPage: React.FC = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const {
+    isLogin,
+    formData,
+    error,
+    isSubmitting,
+    toggleAuthMode,
+    updateFormData,
+    setError,
+    setIsSubmitting,
+  } = useAuthStore();
+
+  // Datos de usuario de prueba
+  const testUser: User = {
+    id: 1,
+    name: "Usuario Prueba",
+    email: "prueba@ejemplo.com",
+    password: "contraseña123",
+    userType: UserType.NORMAL, // Según tu enum de UserType
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+
+    // Asegúrate de que `name` sea uno de los valores permitidos
+    updateFormData(name as 'name' | 'confirmPassword' | 'email' | 'password', value);
+};
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,21 +52,27 @@ const AuthPage: React.FC = () => {
     }
 
     try {
-      const endpoint = isLogin ? '/api/login' : '/api/register';
+      const endpoint = isLogin ? "/api/login" : "/api/register";
       const response = await fetch(endpoint, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         alert(isLogin ? "Inicio de sesión exitoso" : "Registro exitoso");
-        // Aquí podrías redirigir al usuario
+        // Si es el usuario de prueba, puedes gestionarlo aquí
+        if (formData.email === testUser.email) {
+          alert(`Bienvenido, ${testUser.name}`);
+        }
       } else {
         const data = await response.json();
-        setError(data.message || (isLogin ? "Error en el inicio de sesión" : "Error en el registro"));
+        setError(
+          data.message ||
+            (isLogin ? "Error en el inicio de sesión" : "Error en el registro")
+        );
       }
     } catch (error) {
       setError("Error en la conexión");
@@ -66,13 +84,19 @@ const AuthPage: React.FC = () => {
   return (
     <div className="flex h-full flex-col items-center px-3 py-2 md:px-2">
       <h1 className="text-3xl font-bold mb-6">
-        {isLogin ? 'Iniciar Sesión' : 'Registro de Usuario'}
+        {isLogin ? "Iniciar Sesión" : "Registro de Usuario"}
       </h1>
-      
-      <form className="w-full max-w-md bg-white p-6 rounded-lg shadow-md" onSubmit={handleSubmit}>
+
+      <form
+        className="w-full max-w-md bg-white p-6 rounded-lg shadow-md"
+        onSubmit={handleSubmit}
+      >
         {!isLogin && (
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="name"
+            >
               <UserIcon className="w-5 h-5 inline-block mr-2" />
               Nombre
             </label>
@@ -90,7 +114,10 @@ const AuthPage: React.FC = () => {
         )}
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="email"
+          >
             <EnvelopeIcon className="w-5 h-5 inline-block mr-2" />
             Correo Electrónico
           </label>
@@ -107,7 +134,10 @@ const AuthPage: React.FC = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="password"
+          >
             <LockClosedIcon className="w-5 h-5 inline-block mr-2" />
             Contraseña
           </label>
@@ -125,7 +155,10 @@ const AuthPage: React.FC = () => {
 
         {!isLogin && (
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="confirmPassword">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="confirmPassword"
+            >
               <LockClosedIcon className="w-5 h-5 inline-block mr-2" />
               Confirmar Contraseña
             </label>
@@ -150,21 +183,27 @@ const AuthPage: React.FC = () => {
 
         <button
           className={`w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
-            isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+            isSubmitting ? "opacity-50 cursor-not-allowed" : ""
           }`}
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Procesando...' : (isLogin ? 'Iniciar Sesión' : 'Registrarse')}
+          {isSubmitting
+            ? "Procesando..."
+            : isLogin
+            ? "Iniciar Sesión"
+            : "Registrarse"}
         </button>
 
         <div className="mt-4 text-center">
           <button
             type="button"
-            onClick={() => setIsLogin(!isLogin)}
+            onClick={toggleAuthMode}
             className="text-blue-500 hover:text-blue-700"
           >
-            {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
+            {isLogin
+              ? "¿No tienes cuenta? Regístrate"
+              : "¿Ya tienes cuenta? Inicia sesión"}
           </button>
         </div>
       </form>
