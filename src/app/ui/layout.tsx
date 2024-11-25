@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
 import { useAuthStore } from "@/stores/AuthStore";
 import Sidenav from "@/components/sidenav";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 // import { User } from "@/app/lib/types";
 
 const InnerLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -20,11 +20,9 @@ const InnerLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         id: session.user.id,
         name: session.user.name,
         email: session.user.email,
-        // password: session.user.password || undefined,
         userType: session.user.userType,
         groupName: session.user.groupName,
         groupAdmin: session.user.groupAdmin,
-        // especies: session.user.especies || [],
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -34,11 +32,11 @@ const InnerLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }, [session, status, setUser]);
 
   return (
-    <div className="flex">
+    <div className=" md:flex space-x-6">
       <Sidenav />
       <main className="flex-1">
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </main>
     </div>
   );

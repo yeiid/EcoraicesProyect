@@ -17,33 +17,35 @@ export async function GET() {
 // POST: Crear una nueva especie
 export async function POST(req: Request) {
     const { especie, municipio, latitud, longitud, userId } = await req.json();
+
+    console.log({especie, municipio, latitud, longitud, userId})
   
-    try {
-      const newEspecie = await prisma.especie.create({
-        data: {
-          especie,
-          municipio,
-          latitud,
-          longitud,
-          user: {
-            connect: { id: userId } // Conecta el usuario que está creando la especie
-          },
-        },
-        include: { 
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-            },
-          },
-        },
-      });
+    // try {
+    //   const newEspecie = await prisma.especie.create({
+    //     data: {
+    //       especie,
+    //       municipio,
+    //       latitud,
+    //       longitud,
+    //       user: {
+    //         connect: { id: userId } // Conecta el usuario que está creando la especie
+    //       },
+    //     },
+    //     include: { 
+    //       user: {
+    //         select: {
+    //           id: true,
+    //           name: true,
+    //           email: true,
+    //         },
+    //       },
+    //     },
+    //   });
       
-      return NextResponse.json(newEspecie, { status: 201 });
-    } catch (error) {
-      console.error(error);
-      return NextResponse.error();
-    }
+    //   return NextResponse.json(newEspecie, { status: 201 });
+    // } catch (error) {
+    //   console.error(error);
+    //   return NextResponse.error();
+    // }
   }
   

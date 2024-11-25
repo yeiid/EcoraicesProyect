@@ -5,9 +5,11 @@ import React from "react";
 import { useFormStore } from "@/stores/FormStore";
 import { useAuthStore } from "@/stores/AuthStore";
 import { schema } from "@/app/lib/schema";
-import { simplificarErrores } from "@/app/lib/action";
 import { MapPinIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import Button from "./Button";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
 
 const Formulario: React.FC = () => {
   const {
@@ -20,6 +22,7 @@ const Formulario: React.FC = () => {
     setIsSubmitting,
   } = useFormStore();
   const { user } = useAuthStore();
+  const router = useRouter();
 
   const handler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,6 +31,7 @@ const Formulario: React.FC = () => {
 
     if (!user) {
       setValidationError(["Usuario no autenticado. Por favor, inicie sesión."]);
+      toast.error("Usuario no autenticado. Por favor, inicie sesión.");
       setIsSubmitting(false);
       return;
     }
@@ -39,29 +43,42 @@ const Formulario: React.FC = () => {
         userId: user.id,
       });
 
-      const res = await fetch("/api/date", {
+      const res = await fetch("/api/species/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(allData),
-      });
+      }); 
 
       if (res.ok) {
-        alert("¡Datos enviados! Gracias 🎇🎈");
-        window.location.reload();
+        toast.success("¡Datos enviados! Gracias 🎇🎈");
+        router.refresh();
       } else {
         const data = await res.json();
         throw new Error(data.message || "Error al enviar los datos");
       }
     } catch (error: any) {
-      if (error.errors) {
-        const erroresSimplificados = simplificarErrores(error.errors);
+      if (error instanceof z.ZodError) {
+        const erroresSimplificados = error.errors.map((e) => {
+          switch (e.code) {
+            case "too_small":
+              return `${e.path.join(".")} debe contener al menos ${
+                e.minimum
+              } caracter(es) ❌`;
+            case "custom":
+              return e.message || "Error de validación personalizado";
+            default:
+              return "Error de validación ❌";
+          }
+        });
         setValidationError(erroresSimplificados);
+        erroresSimplificados.forEach((msg) => toast.error(msg));
       } else {
         setValidationError([
           "Ocurrió un error al procesar su solicitud. Por favor, inténtelo de nuevo.",
         ]);
+        toast.error("Ocurrió un error al procesar su solicitud. Por favor, inténtelo de nuevo.");
       }
     } finally {
       setIsSubmitting(false);
@@ -146,11 +163,13 @@ const Formulario: React.FC = () => {
 
         {validationError && validationError.length > 0 && (
           <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-            {validationError.map((error, index) => (
-              <p key={index} className="text-sm">
-                {error}
-              </p>
-            ))}
+            <ul className="list-disc pl-5">
+              {validationError.map((error, index) => (
+                <li key={index} className="text-sm">
+                  {error}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 

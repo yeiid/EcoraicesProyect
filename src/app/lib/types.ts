@@ -57,7 +57,6 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  // password: string;
   userType: UserType;
   groupName?: string;
   groupAdmin?: string;
@@ -116,3 +115,13 @@ export interface PaginatedEspecieResponse {
   page: number;
   totalPages: number;
 }
+
+// ----- Tipos para Autenticación -----
+
+// Tipo para datos de formulario de autenticación (login y registro)
+export type AuthFormData = {
+  name?: string; // Opcional, solo para registro
+  email: string;
+  password: string;
+  confirmPassword?: string; // Opcional, solo para registro
+};

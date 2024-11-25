@@ -1,27 +1,22 @@
 // src/stores/AuthStore.ts
 
 import { create } from "zustand";
-import { User } from "@/app/lib/types";
-import { userSchema } from "@/app/lib/validation";
-import { z } from 'zod';
+import { User, AuthFormData } from "@/app/lib/types";
+import { z, ZodError } from "zod";
+import { registrationSchema, loginSchema } from "@/app/lib/validation";
 
 interface AuthState {
   user: User | null;
   setUser: (user: User | null) => void;
   isLogin: boolean;
-  formData: {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-  };
+  formData: AuthFormData;
   error: string | null;
   isSubmitting: boolean;
   toggleAuthMode: () => void;
-  updateFormData: (field: keyof AuthState["formData"], value: string) => void;
+  updateFormData: (field: keyof AuthFormData, value: string) => void;
   setError: (error: string | null) => void;
   setIsSubmitting: (isSubmitting: boolean) => void;
-  validateFormData: () => string | null; // Nueva función de validación
+  validateFormData: () => string | null;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -29,17 +24,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   setUser: (user) => set({ user }),
   isLogin: true,
   formData: {
-    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   },
   error: null,
   isSubmitting: false,
   toggleAuthMode: () =>
     set((state) => ({
       isLogin: !state.isLogin,
-      formData: { ...state.formData, name: "", confirmPassword: "" },
+      formData: {
+        email: "",
+        password: "",
+        name: "",
+        confirmPassword: "",
+      },
       error: null,
     })),
   updateFormData: (field, value) =>
@@ -50,11 +48,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
   validateFormData: () => {
     try {
-      userSchema.parse(get().formData); // Usa get() para acceder a formData
+      if (get().isLogin) {
+        loginSchema.parse(get().formData);
+      } else {
+        registrationSchema.parse(get().formData);
+      }
       return null; // No hay errores
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        return error.errors[0].message; // Retorna el primer mensaje de error
+      if (error instanceof ZodError) {
+        return error.errors.map((e) => e.message).join(", "); // Retorna todos los mensajes de error
       }
       return "Error de validación";
     }

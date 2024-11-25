@@ -4,6 +4,7 @@
 - docs
   - .project_structure_ignore
 - LICENSE
+- next-auth.d.ts
 - next-env.d.ts
 - next.config.js
 - package-lock.json
@@ -33,22 +34,20 @@
     - api
       - auth
         - [...nextauth].ts
-      - date
-        - apiService.ts
-        - NextAuth.ts
+      - register
         - route.ts
       - species
-        - Get.ts
-        - GetId.ts
-        - Post.ts
+        - route.ts
+        - [id]
+          - route.ts
     - globals.css
     - layout.tsx
     - lib
       - action.ts
-      - next-auth.d.ts
       - prisma.ts
       - schema.ts
       - types.ts
+      - validation.ts
     - page.tsx
     - ui
       - about
@@ -56,7 +55,7 @@
         - page.tsx
       - form
         - Button.tsx
-        - TreeForm.tsx
+        - Form.tsx
       - help
         - page.tsx
       - layout.tsx

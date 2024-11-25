@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 import Head from 'next/head';
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "Ecoraices",

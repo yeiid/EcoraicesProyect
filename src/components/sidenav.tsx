@@ -79,7 +79,7 @@ export default function ResponsiveHeader() {
         })}
         
         <div className="mt-auto p-4 bg-gray-50 rounded-md">
-          <Link href='/ui/login/'>LOGIN</Link>
+          <Link href='/ui/auth/'>LOGIN</Link>
         </div>
       </div>
     </div>
