@@ -12,21 +12,39 @@ interface FormState {
   setLocation: (location: Location) => void;
   setValidationError: (errors: string[] | null) => void;
   setIsSubmitting: (isSubmitting: boolean) => void;
+  resetForm: () => void;
 }
 
+// Estado inicial del formulario
+const initialFormState: Form = {
+  especie: "",
+  municipio: "",
+  descripcion: "",
+  estadoConservacion: "",
+};
+
 export const useFormStore = create<FormState>((set) => ({
-  formData: {
-    especie: "",
-    municipio: "",
-  },
+  formData: initialFormState,
   location: null,
   validationError: null,
   isSubmitting: false,
+
   setFormData: (data) =>
     set((state) => ({
       formData: { ...state.formData, ...data },
     })),
+
   setLocation: (location) => set({ location }),
+
   setValidationError: (errors) => set({ validationError: errors }),
+
   setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
+
+  // Función para resetear el formulario
+  resetForm: () =>
+    set({
+      formData: initialFormState,
+      validationError: null,
+      isSubmitting: false,
+    }),
 }));

@@ -4,6 +4,8 @@
 export type Form = {
   especie: string;
   municipio: string;
+  descripcion?: string;
+  estadoConservacion?: string;
 };
 
 export type Location = {
@@ -36,6 +38,8 @@ export interface Especie {
   municipio: string;
   latitud: number;
   longitud: number;
+  descripcion?: string;
+  estadoConservacion?: string;
 }
 
 // Modelo de Especie (extendido)
@@ -45,24 +49,21 @@ export interface EspecieExtended extends Especie {
   user?: User;
 }
 
-// Enum para UserType
-export enum UserType {
-  NORMAL = 'NORMAL',
-  GROUP = 'GROUP',
-  COMMUNITY = 'COMMUNITY'
-}
+// Tipo para el rol de usuario
+export type UserRole = 'user' | 'admin' | 'moderator';
 
 // Modelo de Usuario
 export interface User {
   id: number;
   name: string;
   email: string;
-  userType: UserType;
-  groupName?: string;
-  groupAdmin?: string;
+  userType: UserRole;
+  groupName?: string | null;
+  groupAdmin?: boolean;
+  image?: string | null;
   especies?: Especie[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 // Tipo para el estado del formulario en Zustand
@@ -86,20 +87,23 @@ export interface CreateEspecieResponse {
   municipio: string;
   latitud: number;
   longitud: number;
+  descripcion?: string;
+  estadoConservacion?: string;
   userId: number; // Este campo debe corresponder al ID del usuario que crea la especie
-  user: { // Este objeto debe contener detalles del usuario
+  user: {
+    // Este objeto debe contener detalles del usuario
     id: number;
     name: string;
     email: string;
   };
 }
 
-
 // Tipo para los parámetros de búsqueda de especies
 export interface EspecieSearchParams {
   municipio?: string;
   especie?: string;
   userId?: number;
+  estadoConservacion?: string;
 }
 
 // Tipo para las opciones de paginación

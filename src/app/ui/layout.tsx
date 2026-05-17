@@ -1,53 +1,78 @@
-// src/app/layout.tsx
-
 "use client";
 
-import React, { useEffect } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
 import { useAuthStore } from "@/stores/AuthStore";
-import Sidenav from "@/components/sidenav";
-// import Footer from "@/components/Footer";
-// import { User } from "@/app/lib/types";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import Sidebar from "@/components/ui/Sidebar";
+import { Toaster } from "react-hot-toast";
+import { User, UserRole } from "@/app/lib/types";
 
-const InnerLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Componente para sincronizar la sesión con el store de autenticación
+const SessionSync: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { data: session, status } = useSession();
+  const { setUser } = useAuthStore();
 
-  const setUser = useAuthStore((state) => state.setUser);
-
+  // Sincronizar la sesión con el store
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
-      setUser({
-        id: session.user.id,
-        name: session.user.name,
-        email: session.user.email,
-        userType: session.user.userType,
-        groupName: session.user.groupName,
-        groupAdmin: session.user.groupAdmin,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
-    } else {
+      const userData = session.user as any;
+      const user: Partial<User> = {
+        id: userData.id || 0,
+        name: userData.name || '',
+        email: userData.email || '',
+        image: userData.image || undefined,
+        userType: (userData.userType as UserRole) || 'user',
+        groupName: userData.groupName,
+        groupAdmin: userData.groupAdmin,
+      };
+      setUser(user as User);
+    } else if (status === 'unauthenticated') {
       setUser(null);
     }
   }, [session, status, setUser]);
 
-  return (
-    <div className=" md:flex space-x-6">
-      <Sidenav />
-      <main className="flex-1">
-        {children}
-        {/* <Footer /> */}
-      </main>
-    </div>
-  );
+  return <>{children}</>;
 };
 
+// Componente de layout principal
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const pathname = usePathname();
+  const isAuthPage = pathname.startsWith('/auth');
+
+  // Si es una página de autenticación, no mostrar el sidebar
+  if (isAuthPage) {
+    return (
+      <SessionProvider>
+        <SessionSync>
+          <div className="min-h-screen bg-gray-50">
+            <main>{children}</main>
+          </div>
+          <Toaster position="top-right" />
+        </SessionSync>
+      </SessionProvider>
+    );
+  }
+
+  // Para el resto de páginas, mostrar el layout con sidebar
   return (
     <SessionProvider>
-      <InnerLayout>
-        {children}
-      </InnerLayout>
+      <SessionSync>
+        <div className="flex min-h-screen bg-gray-50">
+          {/* Sidebar */}
+          <Sidebar />
+          
+          {/* Contenido principal */}
+          <main className="flex-1 md:pl-64">
+            <div className="p-4 md:p-8">
+              {children}
+            </div>
+          </main>
+          
+          {/* Notificaciones */}
+          <Toaster position="top-right" />
+        </div>
+      </SessionSync>
     </SessionProvider>
   );
 };

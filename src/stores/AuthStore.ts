@@ -2,12 +2,13 @@
 
 import { create } from "zustand";
 import { User, AuthFormData } from "@/app/lib/types";
-import { z, ZodError } from "zod";
+import { ZodError } from "zod";
 import { registrationSchema, loginSchema } from "@/app/lib/validation";
 
 interface AuthState {
   user: User | null;
   setUser: (user: User | null) => void;
+  logout: () => void;
   isLogin: boolean;
   formData: AuthFormData;
   error: string | null;
@@ -22,6 +23,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   setUser: (user) => set({ user }),
+  logout: () => set({ user: null }),
   isLogin: true,
   formData: {
     email: "",

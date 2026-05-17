@@ -1,5 +1,3 @@
-// src/app/api/auth/[...nextauth]/route.ts
-
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
@@ -46,6 +44,7 @@ const handler = NextAuth({
             throw new Error("Contraseña incorrecta");
           }
 
+          // Aquí agregamos la imagen al retornar los datos del usuario
           return {
             id: user.id,
             name: user.name,
@@ -53,6 +52,7 @@ const handler = NextAuth({
             userType: user.userType as UserType,
             groupName: user.groupName || undefined,
             groupAdmin: user.groupAdmin || undefined,
+            image: user.image || undefined,  // Asegúrate de que 'image' esté en tu modelo User
           };
         } catch (error) {
           if (error instanceof z.ZodError) {
@@ -71,6 +71,7 @@ const handler = NextAuth({
         token.userType = user.userType;
         token.groupName = user.groupName;
         token.groupAdmin = user.groupAdmin;
+        token.image = user.image || null;  // Guardamos la imagen en el token
       }
       return token;
     },
@@ -83,6 +84,7 @@ const handler = NextAuth({
           userType: token.userType as UserType,
           groupName: token.groupName as string | undefined,
           groupAdmin: token.groupAdmin as string | undefined,
+          image: token.image as string | undefined,  // Pasamos la imagen al frontend
         };
       }
       return session;

@@ -1,17 +1,17 @@
 // src/stores/MapStore.ts
 
 import { create } from "zustand";
-import { Especie } from "@/app/lib/types";
+import { EspecieExtended } from "@/app/lib/types";
 
 interface MapState {
-  especies: Especie[];
+  especies: EspecieExtended[];
   searchTerm: string;
-  searchResults: Especie[];
+  searchResults: EspecieExtended[];
   error: string | null;
   isLoading: boolean;
-  setEspecies: (especies: Especie[]) => void;
+  setEspecies: (especies: EspecieExtended[]) => void;
   setSearchTerm: (term: string) => void;
-  setSearchResults: (results: Especie[]) => void;
+  setSearchResults: (results: EspecieExtended[]) => void;
   setError: (error: string | null) => void;
   setIsLoading: (isLoading: boolean) => void;
 }

@@ -1,42 +1,214 @@
 // prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL")
+  url      = env("POSTGRES_URL")
+  extensions = [pg_trgm, postgis]
 }
 
 model Especie {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  especie   String
-  municipio String
-  latitud   Float
-  longitud  Float
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
+  id                  Int               @id @default(autoincrement())
+  nombreCientifico    String
+  nombreComun         String?
+  descripcion         String?           @db.Text
+  altura              Float?
+  diametro            Float?
+  fechaRegistro       DateTime          @default(now())
+  fechaActualizacion  DateTime          @updatedAt
+  
+  // Relaciones
+  ubicacion           Ubicacion         @relation(fields: [ubicacionId], references: [id])
+  ubicacionId         Int
+  
+  estadoConservacion  EstadoConservacion @relation(fields: [estadoConservacionId], references: [id])
+  estadoConservacionId Int
+  
+  usuario             User              @relation(fields: [usuarioId], references: [id])
+  usuarioId           Int
+  
+  imagenes            ImagenEspecie[]
+  caracteristicas     CaracteristicaEspecie[]
+  
+  @@index([nombreCientifico])
+  @@index([nombreComun])
+  @@index([fechaRegistro])
+}
 
-  @@unique([latitud, longitud])
+model Ubicacion {
+  id          Int       @id @default(autoincrement())
+  latitud     Decimal   @db.Decimal(10, 8)
+  longitud    Decimal   @db.Decimal(11, 8)
+  direccion   String?
+  ciudad      String
+  departamento String
+  pais        String    @default("Colombia")
+  
+  // Relación con Especie (uno a uno)
+  especie     Especie[]
+  
+  @@index([ciudad])
+  @@index([departamento])
+  @@index([pais])
+  @@index([latitud, longitud])
+}
+
+model EstadoConservacion {
+  id          Int       @id @default(autoincrement())
+  nombre      String    @unique
+  descripcion String?
+  codigo      String    @unique // Ej: "EN" para En Peligro
+  
+  especies    Especie[]
+}
+
+model ImagenEspecie {
+  id        Int      @id @default(autoincrement())
+  url       String
+  titulo    String?
+  esPrincipal Boolean  @default(false)
+  fechaSubida DateTime @default(now())
+  
+  // Relación con Especie
+  especie   Especie  @relation(fields: [especieId], references: [id])
+  especieId Int
+  
+  // Usuario que subió la imagen
+  usuario   User     @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  
+  @@index([especieId])
+  @@index([usuarioId])
+}
+
+model CaracteristicaEspecie {
+  id          Int      @id @default(autoincrement())
+  nombre      String   // Ej: "Color de la flor", "Tipo de hoja"
+  valor       String   // Valor de la característica
+  
+  // Relación con Especie
+  especie     Especie  @relation(fields: [especieId], references: [id])
+  especieId   Int
+  
+  @@index([especieId])
+  @@index([nombre])
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  name       String
-  email      String    @unique
-  password   String
-  userType   UserType  @default(NORMAL)
-  groupName  String?
-  groupAdmin String?
-  especies   Especie[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id                Int                @id @default(autoincrement())
+  nombre            String
+  email             String             @unique
+  password          String
+  emailVerificado   Boolean            @default(false)
+  emailVerificationToken String?
+  resetPasswordToken String?
+  resetPasswordExpires DateTime?
+  imagenPerfil      String?
+  biografia        String?
+  
+  // Roles y permisos
+  rol              UserRole           @default(USER)
+  permisos         Json?              // Permisos personalizados en formato JSON
+  
+  // Relaciones
+  especiesRegistradas Especie[]
+  imagenesSubidas   ImagenEspecie[]
+  
+  // Relaciones con Comunidades
+  comunidadesUnidas  MiembroComunidad[]
+  comunidadesCreadas Comunidad[]         @relation("ComunidadCreada")
+  publicacionesComunidad PublicacionComunidad[]
+  eventosCreados    EventoComunidad[]
+  
+  // Auditoría
+  ultimoAcceso      DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  
+  @@index([email])
+  @@index([rol])
 }
 
-enum UserType {
-  NORMAL
-  GROUP
-  COMMUNITY
+enum UserRole {
+  USER
+  EDITOR
+  ADMIN
+  SUPER_ADMIN
 }
+
+model Comunidad {
+  id                Int                @id @default(autoincrement())
+  nombre            String
+  descripcion       String?            @db.Text
+  imagen            String?
+  ubicacion         String?
+  latitud           Decimal?           @db.Decimal(10, 8)
+  longitud          Decimal?           @db.Decimal(11, 8)
+  fechaCreacion     DateTime           @default(now())
+  fechaActualizacion DateTime          @updatedAt
+  activa            Boolean            @default(true)
+  
+  // Relaciones
+  creador           User               @relation("ComunidadCreada", fields: [creadorId], references: [id])
+  creadorId         Int
+  
+  miembros          MiembroComunidad[]
+  publicaciones     PublicacionComunidad[]
+  eventos           EventoComunidad[]
+  
+  @@index([nombre])
+  @@index([creadorId])
+}
+
+model MiembroComunidad {
+  id            Int       @id @default(autoincrement())
+  comunidad     Comunidad @relation(fields: [comunidadId], references: [id])
+  comunidadId   Int
+  usuario       User      @relation(fields: [usuarioId], references: [id])
+  usuarioId     Int
+  rol           String    @default("MIEMBRO") // MIEMBRO, MODERADOR, ADMIN
+  fechaUnion    DateTime  @default(now())
+  
+  @@unique([comunidadId, usuarioId])
+  @@index([comunidadId])
+  @@index([usuarioId])
+}
+
+model PublicacionComunidad {
+  id            Int       @id @default(autoincrement())
+  titulo        String
+  contenido     String    @db.Text
+  comunidad     Comunidad @relation(fields: [comunidadId], references: [id])
+  comunidadId   Int
+  autor         User      @relation(fields: [autorId], references: [id])
+  autorId       Int
+  fechaCreacion DateTime  @default(now())
+  fechaActualizacion DateTime @updatedAt
+  
+  @@index([comunidadId])
+  @@index([autorId])
+}
+
+model EventoComunidad {
+  id            Int       @id @default(autoincrement())
+  titulo        String
+  descripcion   String    @db.Text
+  fechaInicio   DateTime
+  fechaFin      DateTime
+  ubicacion     String?
+  latitud       Decimal?  @db.Decimal(10, 8)
+  longitud      Decimal?  @db.Decimal(11, 8)
+  comunidad     Comunidad @relation(fields: [comunidadId], references: [id])
+  comunidadId   Int
+  creador       User      @relation(fields: [creadorId], references: [id])
+  creadorId     Int
+  fechaCreacion DateTime  @default(now())
+  
+  @@index([comunidadId])
+  @@index([creadorId])
+  @@index([fechaInicio])
+}
+

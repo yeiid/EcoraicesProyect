@@ -1,7 +1,16 @@
 import NextAuth from "next-auth";
-import { UserType } from "./src/app/lib/types";
 
 declare module "next-auth" {
+  interface User {
+    id: number;
+    name: string;
+    email: string;
+    userType: UserType;
+    groupName?: string;
+    groupAdmin?: string;
+    image?: string; // Agregar la propiedad de imagen
+  }
+
   interface Session {
     user: {
       id: number;
@@ -10,26 +19,7 @@ declare module "next-auth" {
       userType: UserType;
       groupName?: string;
       groupAdmin?: string;
+      image?: string; // Agregar la propiedad de imagen
     };
-  }
-
-  interface User {
-    id: number;
-    name: string;
-    email: string;
-    userType: UserType;
-    groupName?: string;
-    groupAdmin?: string;
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    id: number;
-    name: string;
-    email: string;
-    userType: UserType;
-    groupName?: string;
-    groupAdmin?: string;
   }
 }

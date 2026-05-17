@@ -1,69 +1,185 @@
 "use client";
-import { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
-import clsx from 'clsx';
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
-const SimpleSlider = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+interface Slide {
+  id: number;
+  type: "image" | "video";
+  src: string;
+  alt: string;
+  title: string;
+  description: string;
+}
 
-  const slides = [
-    { id: 1, type: 'image', src: '/paisaje.jpg', alt: 'Slider 1' },
-    { id: 2, type: 'image', src: '/slaider-paisajefull.jpg', alt: 'Slider 2' },
-    { id: 3, type: 'video', src: '/video.mp4', alt: 'Slider 3' },
-    { id: 4, type: 'image', src: '/melocactus.jpg', alt: 'Slider 4' },
+const ModernSlider: React.FC = () => {
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
+
+  const slides: Slide[] = [
+    {
+      id: 1,
+      type: "image",
+      src: "/paisaje.jpg",
+      alt: "Paisaje Natural",
+      title: "Biodiversidad Local",
+      description: "Explorando la riqueza natural de los ecosistemas guajiros",
+    },
+    {
+      id: 2,
+      type: "image",
+      src: "/slaider-paisajefull.jpg",
+      alt: "Vista Panorámica",
+      title: "Conservación de Especies",
+      description:
+        "Protegiendo nuestra flora autóctona para futuras generaciones",
+    },
+    {
+      id: 4,
+      type: "image",
+      src: "/melocactus.jpg",
+      alt: "Melocactus",
+      title: "Especies Endémicas",
+      description:
+        "Descubriendo las características únicas de nuestra flora local",
+    },
   ];
 
-  const handlePrevClick = useCallback(() => {
-    setCurrentSlide((currentSlide - 1 + slides.length) % slides.length);
-  }, [currentSlide, slides.length]);
+  const handlePrevClick = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
 
-  const handleNextClick = useCallback(() => {
-    setCurrentSlide((currentSlide + 1) % slides.length);
-  }, [currentSlide, slides.length]);
+  const handleNextClick = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
 
+  // Avance automático del slider
   useEffect(() => {
-    const interval = setInterval(handleNextClick, 5000); // Auto-slide every 5 seconds
+    const interval = setInterval(handleNextClick, 7000);
     return () => clearInterval(interval);
-  }, [handleNextClick]);
+  }, []);
+
+  // Teclas de navegación
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        handlePrevClick();
+      } else if (e.key === "ArrowRight") {
+        handleNextClick();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
-    <div className="relative w-full max-w-4xl h-80 mx-auto overflow-hidden bg-white rounded-lg shadow-md">
-      <button
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 px-4 py-2 text-white bg-gray-800 rounded-full hover:bg-gray-700 focus:outline-none"
-        onClick={handlePrevClick}
-      >
-        &lt;
-      </button>
-      <button
-        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 px-4 py-2 text-white bg-gray-800 rounded-full hover:bg-gray-700 focus:outline-none"
-        onClick={handleNextClick}
-      >
-        &gt;
-      </button>
-      {slides.map((slide, index) => (
-        <div
-          key={slide.id}
-          className={clsx(
-            'absolute inset-0 transition-opacity duration-1000',
-            { 'opacity-100': currentSlide === index, 'opacity-0': currentSlide !== index }
-          )}
-        >
-          {slide.type === 'image' ? (
-            <Image src={slide.src} alt={slide.alt} layout="fill" objectFit="cover" />
-          ) : (
-            <video src={slide.src} autoPlay loop muted className="w-full h-full object-cover" />
-          )}
+    <div className="relative w-full max-w-5xl mx-auto overflow-hidden rounded-xl shadow-xl bg-gray-100">
+      {/* Loading indicator */}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center z-20 bg-gray-100">
+          <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
-      ))}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      )}
+
+      {/* Navigation Buttons */}
+      <button
+        onClick={handlePrevClick}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/30 backdrop-blur-sm rounded-full hover:bg-white/50 transition-all duration-300 transform hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+        aria-label="Anterior"
+      >
+        <ChevronLeftIcon className="h-6 w-6 text-white drop-shadow-md" />
+      </button>
+
+      <button
+        onClick={handleNextClick}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 bg-white/30 backdrop-blur-sm rounded-full hover:bg-white/50 transition-all duration-300 transform hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+        aria-label="Siguiente"
+      >
+        <ChevronRightIcon className="h-6 w-6 text-white drop-shadow-md" />
+      </button>
+
+      {/* Slides Container */}
+      <div className="relative h-[450px] w-full">
+        <AnimatePresence initial={false} mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
+          >
+            {slides[currentSlide].type === "image" ? (
+              <div className="relative w-full h-full">
+                <Image
+                  src={slides[currentSlide].src}
+                  alt={slides[currentSlide].alt}
+                  fill
+                  sizes="100vw"
+                  quality={90}
+                  priority
+                  className="object-cover"
+                  onLoadingComplete={() => setLoading(false)}
+                />
+                <motion.div
+                  initial={{ y: 100, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white"
+                >
+                  <h3 className="text-2xl font-bold mb-2">
+                    {slides[currentSlide].title}
+                  </h3>
+                  <p className="text-sm md:text-base max-w-xl">
+                    {slides[currentSlide].description}
+                  </p>
+                </motion.div>
+              </div>
+            ) : (
+              <div className="relative w-full h-full">
+                <video
+                  src={slides[currentSlide].src}
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  loop
+                  muted
+                  onLoadedData={() => setLoading(false)}
+                />
+                <motion.div
+                  initial={{ y: 100, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 text-white"
+                >
+                  <h3 className="text-2xl font-bold mb-2">
+                    {slides[currentSlide].title}
+                  </h3>
+                  <p className="text-sm md:text-base max-w-xl">
+                    {slides[currentSlide].description}
+                  </p>
+                </motion.div>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
         {slides.map((slide, index) => (
           <button
             key={slide.id}
-            className={clsx(
-              'w-3 h-3 rounded-full transition-colors duration-300',
-              { 'bg-blue-600': currentSlide === index, 'bg-gray-300': currentSlide !== index }
-            )}
             onClick={() => setCurrentSlide(index)}
+            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+              currentSlide === index
+                ? "bg-emerald-500 w-8"
+                : "bg-white/60 hover:bg-white/80"
+            }`}
+            aria-label={`Ir a diapositiva ${index + 1}`}
           />
         ))}
       </div>
@@ -71,4 +187,4 @@ const SimpleSlider = () => {
   );
 };
 
-export default SimpleSlider;
+export default ModernSlider;
